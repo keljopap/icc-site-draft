@@ -5,8 +5,8 @@
     <!-- Mobile viewport -->
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title> ICC Payment Plan Application </title>
-    <link rel="stylesheet" type="text/css" href="static/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="static/style.css">
+    <script type="text/javascript" src = "js/icc.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -20,57 +20,17 @@
       var row = table.insertRow(0);
       var cell1 = row.insertCell(0);
       var cell2 = row.insertCell(1);
-      cell1.innerHTML = "NEW CELL1";
-      cell2.innerHTML = "NEW CELL2";
+      cell1.innerHTML = '<td><input type="text" placeholder="Amount Due" name="due1"></td>';
+      cell2.innerHTML = '<td><input type="date" placeholder="Date Due" name="due2"></td>';
     }
     </script>
 
-    <?php
-      // define variables and set to empty values
-      $nameErr = $emailErr = $genderErr = $websiteErr = "";
-      $name = $email = $gender = $comment = $website = "";
-
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["firstname"])) {
-          $firstErr = "First name is required";
-        } else {
-          $name = test_input($_POST["name"]);
-          if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
-            $nameErr = "Only letters and white space allowed"; 
-          }
-        }
-
-        if (empty($_POST["lastname"])) {
-          $lastErr = "Last name is required";
-        } else {
-          $name = test_input($_POST["name"]);
-          if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
-            $nameErr = "Only letters and white space allowed"; 
-          }
-        }
- 
-        if (empty($_POST["email"])) {
-          $emailErr = "E-mail is required";
-        } else {
-          $email = test_input($_POST["email"]);
-          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "Invalid email format"; 
-          }
-        }
-
-      function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-      }
-    ?>
   </head>
 
   <body>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
       <div class="container">
-        <fieldset>
+        <fieldset id="General">
           <legend>
             <h2>General Info</h2>
           </legend>
@@ -80,17 +40,14 @@
         <fieldset>
           <legend> Last name: </legend>
             <input type="text" name="lastname">
-            <span class="error">* <?php echo $lastErr;?></span>
         </fieldset>
         <fieldset>
           <legend> First name: </legend>
           <input type="text" name="firstname">
-          <span class="error">* <?php echo $firstError;?></span>
         </fieldset>
         <fieldset>
           <legend> E-mail address: </legend>
           <input type="email" name="email">
-          <span class="error">* <?php echo $emailErr;?></span>
         </fieldset>
 
         <fieldset>
@@ -120,24 +77,20 @@
       <fieldset>
         <fieldset>
           <legend><h2>Account Balance</h2></legend>
-          <span class="error">* <?php echo $balanceErr;?></span>
           <br>
           <fieldset>
             <legend>Debt as of Today:</legend>
             <input type="text" name="debttoday">
-            <span class="error">* <?php echo $debtErr;?></span>
             <br>
           </fieldset>
           <fieldset>
             <legend>Next month's charges:</legend>
             <input type="text" name="nextmonth"> 
-            <span class="error">* <?php echo $charge1Err;?></span>
             <br>
           </fieldset>
           <fieldset>
             <legend>Following month's charges:</legend>
             <input type="text" name="follmonth"> 
-            <span class="error">* <?php echo $charge2Err;?></span>
             <br>
           </fieldset>
       </fieldset>
@@ -213,8 +166,6 @@
 
 <form action="action_page.php" method="post">
 
-<p>Copyright &copy Kelli Pape 2016.</p>
-
 </form> 
 </div>  
 
@@ -223,3 +174,5 @@
     </fieldset>
 
       </div>
+
+<footer>Copyright &copy Kelli Pape 2016.</footer>

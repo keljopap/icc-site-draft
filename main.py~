@@ -13,67 +13,30 @@ start = """
 	<img src= "/static/paymentplanheader.jpg" align="middle">
 	<p> <h3> Welcome to the new online ICC payment plan form.  This will be automatically sent to members of the Finance Committee for review.  </h3> </p>
 
-<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script>
-    $(function() {
-         $( "#datepicker" ).datepicker();   
-    }); 
-</script>
+  <script>
+    function addNewPaymentSource() {
+    var table = document.getElementById("myTable");
+    var row = table.insertRow(0);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    cell1.innerHTML = '<td><input type="text" placeholder="Amount Due" name="due1"></td>';
+    cell2.innerHTML = '<td><input type="date" placeholder="Amount Due" name="due2"></td>';
+  }
+  </script>
 
 </head>
 """
 
 myForm = """
 <link rel="stylesheet" href="static/style.css">
-<?php 
-// define variables and set to empty values
-$lastnameErr = $firstnameErr = $emailErr = $coopErr = "";
-$lastname= $firstname = $email = $coop = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-   if (empty($_POST["lastname"])) {
-     $lastnameErr = "Last name is required";
-   } else {
-     $lastname = test_input($_POST["lastname"]);
-   }
-   
-   if (empty($_POST["firstname"])) {
-     $firstnameErr = "First name is required";
-   } else {
-     $firstname = test_input($_POST["firstname"]);
-   }
-     
-   if (empty($_POST["email"])) {
-     $email = "";
-   } else {
-     $email = test_input($_POST["email"]);
-   }
-
-   if (empty($_POST["coop"])) {
-     $coop = "";
-   } else {
-     $coop = test_input($_POST["coop"]);
-   }
-
-}
-
-
-function test_input($data) {
-   $data = trim($data);
-   $data = stripslashes($data);
-   $data = htmlspecialchars($data);
-   return $data;
-}
-
-?>
 
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>
 <div class="daForm">
   <fieldset>
 
     <legend> <h2> General Info </h2> </legend>
+
+    <iframe src="http://www.icc.coop/current/finance/documents/ICCFinancialAidFAQ.pdf"></iframe>
 
     <fieldset>
       <legend> Last name: </legend>
@@ -230,20 +193,20 @@ end = """
 """
 
 class FormHandler(webapp2.RequestHandler):
-    #This function creates the start page
-    def get(self):
-	logging.info("GET")
-        self.response.write(start)
-	self.response.write(myForm)
+  #This function creates the start page
+  def get(self):
+    logging.info("GET")
+    self.response.write(start)
+    self.response.write(myForm)
 
-    #This generates every succeeding page and prints
-    #the previous page's input as their guess
-    def post(self):
-	logging.info("POST")
-	logging.info("this is just for testing")
-	debttoday2 = self.request.get("debttoday")
-	nextmonth2 = self.request.get("nextmonth")
-	follmonth2 = self.request.get("follmonth")
+  #This generates every succeeding page and prints
+  #the previous page's input as their guess
+  def post(self):
+    logging.info("POST")
+    logging.info("this is just for testing")
+    debttoday2 = self.request.get("debttoday")
+    nextmonth2 = self.request.get("nextmonth")
+    follmonth2 = self.request.get("follmonth")
 
 	#tries to typecast data into an integer
 	try:

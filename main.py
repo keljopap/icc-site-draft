@@ -9,113 +9,26 @@ start = """
 <head>
 	<meta charset = "UTF-8">
 	<title> ICC Payment Plan Form </title>
-	<link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="static/style.css">	
+
 	<img src= "/static/paymentplanheader.jpg" align="middle">
 	<p> <h3> Welcome to the new online ICC payment plan form.  This will be automatically sent to members of the Finance Committee for review.  </h3> </p>
 
-  <script>
+</head>
+<body>
+
+<script>
     function addNewPaymentSource() {
     var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = "NEW CELL1";
-    cell2.innerHTML = "NEW CELL2";
+    table.innerHTML += "<tr><td><input type="text" placeholder="Amount Due" name="due1"></td>
+    <td><input type="date" placeholder="Date Due" name="due2"></td></tr>";
   }
-  </script>
+</script>
 
-  <?php
-    // define variables and set to empty values
-    $nameErr = $emailErr = $genderErr = $websiteErr = "";
-    $name = $email = $gender = $comment = $website = "";
+<form method="post" id="daForm">
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      if (empty($_POST["firstname"])) {
-        $firstErr = "First name is required";
-      } else {
-        $name = test_input($_POST["name"]);
-        if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
-          $nameErr = "Only letters and white space allowed"; 
-        }
-      }
-
-      if (empty($_POST["lastname"])) {
-        $lastErr = "Last name is required";
-      } else {
-        $name = test_input($_POST["name"]);
-        if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
-          $nameErr = "Only letters and white space allowed"; 
-        }
-      }
-
-      if (empty($_POST["email"])) {
-        $emailErr = "E-mail is required";
-      } else {
-        $email = test_input($_POST["email"]);
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-          $emailErr = "Invalid email format"; 
-        }
-      }
-
-    function test_input($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
-    }
-  ?>
-
-</head>
-"""
-
-myForm = """
-<link rel="stylesheet" href="static/style.css">
-<?php 
-// define variables and set to empty values
-$lastnameErr = $firstnameErr = $emailErr = $coopErr = "";
-$lastname= $firstname = $email = $coop = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-   if (empty($_POST["lastname"])) {
-     $lastnameErr = "Last name is required";
-   } else {
-     $lastname = test_input($_POST["lastname"]);
-   }
-   
-   if (empty($_POST["firstname"])) {
-     $firstnameErr = "First name is required";
-   } else {
-     $firstname = test_input($_POST["firstname"]);
-   }
-     
-   if (empty($_POST["email"])) {
-     $email = "";
-   } else {
-     $email = test_input($_POST["email"]);
-   }
-
-   if (empty($_POST["coop"])) {
-     $coop = "";
-   } else {
-     $coop = test_input($_POST["coop"]);
-   }
-
-}
-
-
-function test_input($data) {
-   $data = trim($data);
-   $data = stripslashes($data);
-   $data = htmlspecialchars($data);
-   return $data;
-}
-
-?>
-
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>
-<div class="daForm">
-  <fieldset>
+  <fieldset id="General">
 
     <legend> <h2> General Info </h2> </legend>
 
@@ -158,7 +71,7 @@ function test_input($data) {
 
 </fieldset>
 
-<fieldset>
+<fieldset id="Balance">
 <legend><h2> Account Balance </h2></legend>
 <fieldset>
   <legend>Debt as of Today:</legend>
@@ -194,20 +107,11 @@ function test_input($data) {
 </table>
 <br>
 
-<button onclick="myFunction()">Add Another</button>
+<button onclick="addNewPaymentSource()">Add Another</button>
 
-<script>
-function myFunction() {
-    var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = "NEW CELL1";
-    cell2.innerHTML = "NEW CELL2";
-}
-</script>
+
 </fieldset>
-<fieldset>
+<fieldset id="Payment">
 <legend>Sources of Payment</legend>
 <p>In order to be approved for a payment plan, the member must demonstrate their source(s) of monies to cover the necessary debt in accordance with the payment schedule above.
 <p>Please fill in the following:</p>
@@ -229,23 +133,13 @@ function myFunction() {
 <p> *Acceptable types of documentation may include:  documents from the Financial Aid Office, paystubs, etc. </p>
 <br>
 
-<button onclick="myFunction()">Add Another</button>
+<button onclick="addNewPaymentSource()">Add Another</button>
 
-<script>
-function myFunction() {
-    var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = "NEW CELL1";
-    cell2.innerHTML = "NEW CELL2";
-}
-</script>
 
 </fieldset>
 </fieldset>
 
-<fieldset>
+<fieldset id="Agree">
 <legend><h2>Terms of Agreement</h2></legend>
 <fieldset>
 <p><input type="checkbox" name="understood">I understand that if I miss a payment, I will be fined $20 and eviction proceedings will be started against me.  To stop the eviction process at that point, the outstanding balance due must be paid in full.  I also understand that I will be charged for any costs arising out of the eviction process, including attorney fees, office fees, and court costs.</p>
@@ -262,69 +156,61 @@ function myFunction() {
 </fieldset>
 </fieldset>
 
-<form action="action_page.php" method="post">
-
-<p>Copyright &copy Kelli Pape 2016.</p>
-
 </form> 
-</div>	
-"""
 
-end = """
-	</body>
-		</html>
+</body>
+<footer>Copyright &copy Kelli Pape 2016.</footer>
+</html>
 """
 
 class FormHandler(webapp2.RequestHandler):
-  #This function creates the start page
-  def get(self):
-    logging.info("GET")
-    self.response.write(start)
-    self.response.write(myForm)
+    #This function creates the start page
+    def get(self):
+        logging.info("GET")
+        self.response.write(start)
 
-  #This generates every succeeding page and prints
-  #the previous page's input as their guess
-  def post(self):
-    logging.info("POST")
-    logging.info("this is just for testing")
-    debttoday2 = self.request.get("debttoday")
-    nextmonth2 = self.request.get("nextmonth")
-    follmonth2 = self.request.get("follmonth")
+    #This generates every succeeding page and prints
+    #the previous page's input as their guess
+    def post(self):
+        logging.info("POST")
+        logging.info("this is just for testing")
+        debttoday2 = self.request.get("debttoday")
+        nextmonth2 = self.request.get("nextmonth")
+        follmonth2 = self.request.get("follmonth")
 
-	#tries to typecast data into an integer
-	try:
-	    #guess = int(data)
-	    debttoday3 = int(debttoday2)
-	    #nextmonth = float(nextmonth2)
-	    #follmonth = float(follmonth2)
+  	#tries to typecast data into an integer
+  	try:
+  	    #guess = int(data)
+  	    debttoday3 = float(debttoday2)
+  	    #nextmonth = float(nextmonth2)
+  	    #follmonth = float(follmonth2)
 
-	    #answer = 42
+  	    #answer = 42
 
-	    if debttoday3 <= 0.00:
-	        msg = "You have no debt.  Wut r u doin here."	
-	    elif debttoday3 < 200.00:
-	        msg = "This plan is not required 4 u but thx 4 coming neway"
-	    elif debttoday3 < 1000.00:
-	        msg = "Your debt is below 1000"
-	    else:
-		msg = "You are in danger of being evicted ... call the ICC NOW!"
-	    # "%d" takes guess as an integer only
-	    self.response.write("<html><p>Your current debt: %d</p></html>" %guess)
-	    self.response.write("%s</p></html>" %msg)
+  	    if debttoday3 <= 0.00:
+  	        msg = "You have no debt.  Wut r u doin here."	
+  	    elif debttoday3 < 200.00:
+  	        msg = "This plan is not required 4 u but thx 4 coming neway"
+  	    elif debttoday3 < 1000.00:
+  	        msg = "Your debt is below 1000"
+  	    else:
+  		      msg = "You are in danger of being evicted ... call the ICC NOW!"
+  	    # "%d" takes guess as an integer only
+  	    self.response.write("<html><p>Your current debt: %d</p></html>" %debttoday3)
+  	    self.response.write("%s</p></html>" %msg)
 
-	#if it can't, then it prints it as a string instead!
-	except:
-	    debttoday3 = debttoday2
-	    msg = "Please provide a numerical answer to 'current debt'"
-	    # "%s" takes guess for w/e it is, converts to string
-	    self.response.write("<html><p>Guess: %s</p></html>" %debttoday3)
-	    #notice I wrote a new line here to stay in scope
-	    self.response.write("<html><p>%s</p></html>" %msg)
+  	#if it can't, then it prints it as a string instead!
+  	except:
+  	    debttoday3 = debttoday2
+  	    msg = "Please provide a numerical answer to 'current debt'"
+  	    # "%s" takes guess for w/e it is, converts to string
+  	    self.response.write("<html><p>Guess: %s</p></html>" %debttoday3)
+  	    #notice I wrote a new line here to stay in scope
+  	    self.response.write("<html><p>%s</p></html>" %msg)
 	
-	#this is what makes the process eternal!"""
-	self.response.write(start)
-	self.response.write(myForm)
+  	#this is what makes the process eternal!"""
+  	self.response.write(start)
 
 app = webapp2.WSGIApplication([
 	('/.*', FormHandler)
-], debug = False)
+], debug = True)

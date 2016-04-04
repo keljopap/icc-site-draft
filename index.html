@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!-- Mobile viewport -->
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title> ICC Payment Plan Application </title>
+    <link rel="stylesheet" type="text/css" href="static/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+      function addNewPaymentSource() {
+      var table = document.getElementById("myTable");
+      var row = table.insertRow(0);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      cell1.innerHTML = "NEW CELL1";
+      cell2.innerHTML = "NEW CELL2";
+    }
+    </script>
+
+    <?php
+      // define variables and set to empty values
+      $nameErr = $emailErr = $genderErr = $websiteErr = "";
+      $name = $email = $gender = $comment = $website = "";
+
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (empty($_POST["firstname"])) {
+          $firstErr = "First name is required";
+        } else {
+          $name = test_input($_POST["name"]);
+          if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
+            $nameErr = "Only letters and white space allowed"; 
+          }
+        }
+
+        if (empty($_POST["lastname"])) {
+          $lastErr = "Last name is required";
+        } else {
+          $name = test_input($_POST["name"]);
+          if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
+            $nameErr = "Only letters and white space allowed"; 
+          }
+        }
+ 
+        if (empty($_POST["email"])) {
+          $emailErr = "E-mail is required";
+        } else {
+          $email = test_input($_POST["email"]);
+          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format"; 
+          }
+        }
+
+      function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+      }
+    ?>
+  </head>
+
+  <body>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+      <div class="container">
+        <fieldset>
+          <legend>
+            <h2>General Info</h2>
+          </legend>
+  	    
+          <iframe src="http://www.icc.coop/current/finance/documents/ICCFinancialAidFAQ.pdf"></iframe>
+
+        <fieldset>
+          <legend> Last name: </legend>
+            <input type="text" name="lastname">
+            <span class="error">* <?php echo $lastErr;?></span>
+        </fieldset>
+        <fieldset>
+          <legend> First name: </legend>
+          <input type="text" name="firstname">
+          <span class="error">* <?php echo $firstError;?></span>
+        </fieldset>
+        <fieldset>
+          <legend> E-mail address: </legend>
+          <input type="email" name="email">
+          <span class="error">* <?php echo $emailErr;?></span>
+        </fieldset>
+
+        <fieldset>
+          <legend> Please select your house: </legend>
+          <select name="house">
+            <option value="Baker Graduate">Baker Graduate</option>
+            <option value="Black Elk">Black Elk</option>
+            <option value="Debs">Debs</option>
+            <option value="Escher">Escher</option>
+            <option value="Gregory">Gregory</option>
+            <option value="King">King</option>
+            <option value="Lester">Lester</option>
+            <option value="Linder">Linder</option>
+            <option value="Luther">Luther</option>
+            <option value="Michigan">Michigan</option>
+            <option value="Minnie's">Minnie's</option>
+            <option value="Nakamura">Nakamura</option>
+            <option value="Osterweil">Osterweil</option>
+            <option value="Owen">Owen</option>
+            <option value="Ruths'">Ruths'</option>
+            <option value="Truth">Truth</option>
+            <option value="Vail">Vail</option>
+          </select>
+        </fieldset> <br>
+      </fieldset>
+
+      <fieldset>
+        <fieldset>
+          <legend><h2>Account Balance</h2></legend>
+          <span class="error">* <?php echo $balanceErr;?></span>
+          <br>
+          <fieldset>
+            <legend>Debt as of Today:</legend>
+            <input type="text" name="debttoday">
+            <span class="error">* <?php echo $debtErr;?></span>
+            <br>
+          </fieldset>
+          <fieldset>
+            <legend>Next month's charges:</legend>
+            <input type="text" name="nextmonth"> 
+            <span class="error">* <?php echo $charge1Err;?></span>
+            <br>
+          </fieldset>
+          <fieldset>
+            <legend>Following month's charges:</legend>
+            <input type="text" name="follmonth"> 
+            <span class="error">* <?php echo $charge2Err;?></span>
+            <br>
+          </fieldset>
+      </fieldset>
+
+      <legend>Calendar:</legend> <input type="date" name="date">
+</fieldset>
+</fieldset>
+<fieldset>
+<legend><h2>Action Plan:</h2></legend>
+<fieldset>
+<legend>Schedule of Payments</legend>
+<p>I agree to pay the following amounts by the dates listed below.</p>
+<p>This amount must include ALL charges from the months covered by this plan.  50% of the total must be paid in 4 weeks, and 100% must be paid in 8 weeks.  All payment plans must be paid in full by the end of the contract period.</p>
+
+<table id="myTable">
+  <tr>
+    <td>Amount Due</td>
+    <td>Date Due</td>
+  </tr>
+  <tr>
+    <td><input type="text" placeholder="Amount Due" name="due1"></td>
+    <td><input type="date" placeholder="Date Due" name="due2"></td>
+  </tr>
+</table>
+<br>
+
+<button onclick="addNewPaymentSource()">Add Another</button>
+
+</fieldset>
+<fieldset>
+<legend>Sources of Payment</legend>
+<p>In order to be approved for a payment plan, the member must demonstrate their source(s) of monies to cover the necessary debt in accordance with the payment schedule above.
+<p>Please fill in the following:</p>
+
+<table id="myTable">
+  <tr>
+    <th>Source of Income</th>
+    <th>Date Available</th>
+    <th>Amount Available</th>
+    <th>Attach Documentation*</th>
+  </tr>
+  <tr>
+    <td><input type="text" placeholder="Source of Income" name="source"></td>
+    <td><input type="date" placeholder="Date Available" name="davail"></td>
+    <td><input type="text" placeholder="Amt. Available" name="aavail"></td>
+    <td><input type="text" placeholder="Documentation" name="doc"></td>
+  </tr>
+</table>
+<p> *Acceptable types of documentation may include:  documents from the Financial Aid Office, paystubs, etc. </p>
+<br>
+
+<button onclick="addNewPaymentSource()">Add Another</button>
+
+</fieldset>
+</fieldset>
+
+<fieldset>
+<legend><h2>Terms of Agreement</h2></legend>
+<fieldset>
+<p><input type="checkbox" name="understood">I understand that if I miss a payment, I will be fined $20 and eviction proceedings will be started against me.  To stop the eviction process at that point, the outstanding balance due must be paid in full.  I also understand that I will be charged for any costs arising out of the eviction process, including attorney fees, office fees, and court costs.</p>
+</fieldset>
+<fieldset>
+<p>If you or anyone in your house has any questions about this process, please have them contact the ICC Finance Office at iccfinanceoffice@gmail.com or 734-662-4414 ext. 108.  We will be more than happy to assist you.</p>
+<p>Any additional comments or concerns, or special background information we should consider in our decision, about this process are welcome here.</p>
+<p><textarea name="comments" cols="30" rows="5" class="html-text-box"></textarea>
+<input type="reset" value="Reset" class="html-text-box"></p>
+</fieldset>
+
+<fieldset>
+<input type="submit" value="Submit" align="middle">
+</fieldset>
+</fieldset>
+
+<form action="action_page.php" method="post">
+
+<p>Copyright &copy Kelli Pape 2016.</p>
+
+</form> 
+</div>  
+
+
+
+    </fieldset>
+
+      </div>

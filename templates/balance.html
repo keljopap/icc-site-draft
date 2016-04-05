@@ -1,0 +1,26 @@
+{%extends "templates/base.html" %}
+
+{%block a%}general info{%endblock%}
+{%block b%}ACCOUNT BALANCE{%endblock%}
+
+{% block content %}
+
+<fieldset id="Balance">
+<legend><h2> Account Balance </h2></legend>
+<fieldset>
+  <legend>Debt as of Today:</legend>
+  <input type="text" name="debttoday"> <br></fieldset>
+<fieldset>
+  <legend>Next month's charges:</legend>
+  <input type="text" name="nextmonth"> <br></fieldset>
+<fieldset>
+  <legend>Following month's charges:</legend>
+  <input type="text" name="follmonth"> <br>
+</fieldset>
+<fieldset>
+
+<legend>Calendar:</legend> <input type="date" name="date">
+</fieldset>
+</fieldset>
+
+{% endblock %}

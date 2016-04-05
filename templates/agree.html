@@ -1,0 +1,25 @@
+{%extends "templates/base.html" %}
+
+{%block a%}general info{%endblock%}
+{%block c%}TERMS OF AGREEMENT{%endblock%}
+
+{% block content %}
+
+<fieldset id="Agree">
+<legend><h2>Terms of Agreement</h2></legend>
+<fieldset>
+<p><input type="checkbox" name="understood">I understand that if I miss a payment, I will be fined $20 and eviction proceedings will be started against me.  To stop the eviction process at that point, the outstanding balance due must be paid in full.  I also understand that I will be charged for any costs arising out of the eviction process, including attorney fees, office fees, and court costs.</p>
+</fieldset>
+<fieldset>
+<p>If you or anyone in your house has any questions about this process, please have them contact the ICC Finance Office at iccfinanceoffice@gmail.com or 734-662-4414 ext. 108.  We will be more than happy to assist you.</p>
+<p>Any additional comments or concerns, or special background information we should consider in our decision, about this process are welcome here.</p>
+<p><textarea name="comments" cols="30" rows="5" class="html-text-box"></textarea>
+<input type="reset" value="Reset" class="html-text-box"></p>
+</fieldset>
+
+<fieldset>
+<input type="submit" value="Submit" align="middle">
+</fieldset>
+</fieldset>
+
+{% endblock %}

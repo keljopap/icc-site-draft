@@ -18,8 +18,8 @@ handlers:
 - url: /js
   static_dir: js
 
-- url: /.*
-  script: main.py
+- url: /*
+  script: main.app
 
 libraries:
 - name: webapp2

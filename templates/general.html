@@ -1,0 +1,50 @@
+{%extends "templates/base.html" %}
+
+
+{% block content %}
+
+  <fieldset id="General">
+
+    <legend> <h2> General Info </h2> </legend>
+
+    <iframe src="http://www.icc.coop/current/finance/documents/ICCFinancialAidFAQ.pdf"></iframe>
+
+    <fieldset>
+      <legend> Last name: </legend>
+      <input type="text" name="lastname">
+    </fieldset>
+    <fieldset>
+      <legend> First name: </legend>
+      <input type="text" name="firstname">
+    </fieldset>
+    <fieldset>
+      <legend> E-mail address: </legend>
+      <input type="email" name="email">
+    </fieldset>
+    <fieldset>
+      <legend> Please select your house: </legend>
+      <select name="house">
+      <option value="Baker Graduate">Baker Graduate</option>
+      <option value="Black Elk">Black Elk</option>
+      <option value="Debs">Debs</option>
+      <option value="Escher">Escher</option>
+      <option value="Gregory">Gregory</option>
+      <option value="King">King</option>
+      <option value="Lester">Lester</option>
+      <option value="Linder">Linder</option>
+      <option value="Luther">Luther</option>
+      <option value="Michigan">Michigan</option>
+      <option value="Minnie's">Minnie's</option>
+      <option value="Nakamura">Nakamura</option>
+      <option value="Osterweil">Osterweil</option>
+      <option value="Owen">Owen</option>
+      <option value="Ruths'">Ruths'</option>
+      <option value="Truth">Truth</option>
+      <option value="Vail">Vail</option>
+      </select>
+    </fieldset> <br>
+
+</fieldset>
+
+{% endblock %}
+

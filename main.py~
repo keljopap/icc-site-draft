@@ -1,7 +1,18 @@
 #Kelli Jo Pape
 
+import cgi
 import webapp2
+import os
 import logging
+import jinja2
+
+
+# Lets set it up so we know where we stored the template files
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True) 
+
 
 start = """
 <!DOCTYPE html>
@@ -9,30 +20,27 @@ start = """
 <head>
 	<meta charset = "UTF-8">
 	<title> ICC Payment Plan Form </title>
-	<link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="static/style.css">	
+
 	<img src= "/static/paymentplanheader.jpg" align="middle">
 	<p> <h3> Welcome to the new online ICC payment plan form.  This will be automatically sent to members of the Finance Committee for review.  </h3> </p>
 
-  <script>
+</head>
+
+<body>
+
+<script>
     function addNewPaymentSource() {
     var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = '<td><input type="text" placeholder="Amount Due" name="due1"></td>';
-    cell2.innerHTML = '<td><input type="date" placeholder="Amount Due" name="due2"></td>';
+    var lastRow = table.rows.length;
+    var row = table.insertRow(lastRow);
   }
-  </script>
+</script>
 
-</head>
-"""
+<form action="cgi-bin/main.py method="post" id="daForm">
 
-myForm = """
-<link rel="stylesheet" href="static/style.css">
-
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>
-<div class="daForm">
-  <fieldset>
+  <fieldset id="General">
 
     <legend> <h2> General Info </h2> </legend>
 
@@ -75,7 +83,7 @@ myForm = """
 
 </fieldset>
 
-<fieldset>
+<fieldset id="Balance">
 <legend><h2> Account Balance </h2></legend>
 <fieldset>
   <legend>Debt as of Today:</legend>
@@ -92,6 +100,7 @@ myForm = """
 <legend>Calendar:</legend> <input type="date" name="date">
 </fieldset>
 </fieldset>
+
 <fieldset>
 <legend><h2>Action Plan:</h2></legend>
 <fieldset>
@@ -111,20 +120,11 @@ myForm = """
 </table>
 <br>
 
-<button onclick="myFunction()">Add Another</button>
+<button onclick="addNewPaymentSource()">Add Another</button>
 
-<script>
-function myFunction() {
-    var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = "NEW CELL1";
-    cell2.innerHTML = "NEW CELL2";
-}
-</script>
+
 </fieldset>
-<fieldset>
+<fieldset id="Payment">
 <legend>Sources of Payment</legend>
 <p>In order to be approved for a payment plan, the member must demonstrate their source(s) of monies to cover the necessary debt in accordance with the payment schedule above.
 <p>Please fill in the following:</p>
@@ -146,23 +146,13 @@ function myFunction() {
 <p> *Acceptable types of documentation may include:  documents from the Financial Aid Office, paystubs, etc. </p>
 <br>
 
-<button onclick="myFunction()">Add Another</button>
+<button onclick="addNewPaymentSource()">Add Another</button>
 
-<script>
-function myFunction() {
-    var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = "NEW CELL1";
-    cell2.innerHTML = "NEW CELL2";
-}
-</script>
 
 </fieldset>
 </fieldset>
 
-<fieldset>
+<fieldset id="Agree">
 <legend><h2>Terms of Agreement</h2></legend>
 <fieldset>
 <p><input type="checkbox" name="understood">I understand that if I miss a payment, I will be fined $20 and eviction proceedings will be started against me.  To stop the eviction process at that point, the outstanding balance due must be paid in full.  I also understand that I will be charged for any costs arising out of the eviction process, including attorney fees, office fees, and court costs.</p>
@@ -179,69 +169,76 @@ function myFunction() {
 </fieldset>
 </fieldset>
 
-<form action="action_page.php" method="post">
-
-<p>Copyright &copy Kelli Pape 2016.</p>
-
 </form> 
-</div>	
+
+</body>
+<footer>Copyright &copy Kelli Pape 2016.</footer>
+</html>
 """
 
-end = """
-	</body>
-		</html>
-"""
 
 class FormHandler(webapp2.RequestHandler):
-  #This function creates the start page
-  def get(self):
-    logging.info("GET")
-    self.response.write(start)
-    self.response.write(myForm)
+    #This function creates the start page
+    def get(self):
 
-  #This generates every succeeding page and prints
-  #the previous page's input as their guess
-  def post(self):
-    logging.info("POST")
-    logging.info("this is just for testing")
-    debttoday2 = self.request.get("debttoday")
-    nextmonth2 = self.request.get("nextmonth")
-    follmonth2 = self.request.get("follmonth")
-
-	#tries to typecast data into an integer
-	try:
-	    #guess = int(data)
-	    debttoday3 = int(debttoday2)
-	    #nextmonth = float(nextmonth2)
-	    #follmonth = float(follmonth2)
-
-	    #answer = 42
-
-	    if debttoday3 <= 0.00:
-	        msg = "You have no debt.  Wut r u doin here."	
-	    elif debttoday3 < 200.00:
-	        msg = "This plan is not required 4 u but thx 4 coming neway"
-	    elif debttoday3 < 1000.00:
-	        msg = "Your debt is below 1000"
-	    else:
-		msg = "You are in danger of being evicted ... call the ICC NOW!"
-	    # "%d" takes guess as an integer only
-	    self.response.write("<html><p>Your current debt: %d</p></html>" %guess)
-	    self.response.write("%s</p></html>" %msg)
-
-	#if it can't, then it prints it as a string instead!
-	except:
-	    debttoday3 = debttoday2
-	    msg = "Please provide a numerical answer to 'current debt'"
-	    # "%s" takes guess for w/e it is, converts to string
-	    self.response.write("<html><p>Guess: %s</p></html>" %debttoday3)
-	    #notice I wrote a new line here to stay in scope
-	    self.response.write("<html><p>%s</p></html>" %msg)
+    	logging.info("GET")
+		#logging.info(self.request.path)
+    	path = 'templates' + self.request.path
 	
-	#this is what makes the process eternal!"""
-	self.response.write(start)
-	self.response.write(myForm)
+	temp = os.path.join(os.path.dirname(__file__), path)
+
+	if not os.path.isfile(temp):
+		temp = os.path.join(os.path.dirname(__file__), 'templates/general.html')
+		path = 'templates/general.html'
+		
+	#self.response.write(path + '<br />')
+	template = JINJA_ENVIRONMENT.get_template(path)
+
+	self.response.write(template.render())
+
+
+    #This generates every succeeding page and prints
+    #the previous page's input as their guess
+    #def post(self):
+        #logging.info("POST")
+        #logging.info("this is just for testing")
+        #debttoday2 = self.request.get("debttoday")
+        #nextmonth2 = self.request.get("nextmonth")
+        #follmonth2 = self.request.get("follmonth")
+"""
+  	#tries to typecast data into an integer
+  	try:
+  	    #guess = int(data)
+  	    debttoday3 = float(debttoday2)
+  	    #nextmonth = float(nextmonth2)
+  	    #follmonth = float(follmonth2)
+
+  	    #answer = 42
+
+  	    if debttoday3 <= 0.00:
+  	        msg = "You have no debt.  Wut r u doin here."	
+  	    elif debttoday3 < 200.00:
+  	        msg = "This plan is not required 4 u but thx 4 coming neway"
+  	    elif debttoday3 < 1000.00:
+  	        msg = "Your debt is below 1000"
+  	    else:
+  		      msg = "You are in danger of being evicted ... call the ICC NOW!"
+  	    # "%d" takes guess as an integer only
+  	    self.response.write("<html><p>Your current debt: %d</p></html>" %debttoday3)
+  	    self.response.write("%s</p></html>" %msg)
+
+  	#if it can't, then it prints it as a string instead!
+  	except:
+  	    debttoday3 = debttoday2
+  	    msg = "Please provide a numerical answer to 'current debt'"
+  	    # "%s" takes guess for w/e it is, converts to string
+  	    self.response.write("<html><p>Guess: %s</p></html>" %debttoday3)
+  	    #notice I wrote a new line here to stay in scope
+  	    self.response.write("<html><p>%s</p></html>" %msg)
+"""
+  	#this is what makes the process eternal!"""
+  	#self.response.write(start)
 
 app = webapp2.WSGIApplication([
 	('/.*', FormHandler)
-], debug = False)
+], debug = True)

@@ -1,7 +1,18 @@
 #Kelli Jo Pape
 
+import cgi
 import webapp2
+import os
 import logging
+import jinja2
+
+
+# Lets set it up so we know where we stored the template files
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True) 
+
 
 start = """
 <!DOCTYPE html>
@@ -10,23 +21,24 @@ start = """
 	<meta charset = "UTF-8">
 	<title> ICC Payment Plan Form </title>
 
-  <link rel="stylesheet" href="static/style.css">	
+  <link type="text/css" rel="stylesheet" href="static/style.css">	
 
 	<img src= "/static/paymentplanheader.jpg" align="middle">
 	<p> <h3> Welcome to the new online ICC payment plan form.  This will be automatically sent to members of the Finance Committee for review.  </h3> </p>
 
 </head>
+
 <body>
 
 <script>
     function addNewPaymentSource() {
     var table = document.getElementById("myTable");
-    table.innerHTML += "<tr><td><input type="text" placeholder="Amount Due" name="due1"></td>
-    <td><input type="date" placeholder="Date Due" name="due2"></td></tr>";
+    var lastRow = table.rows.length;
+    var row = table.insertRow(lastRow);
   }
 </script>
 
-<form method="post" id="daForm">
+<form action="cgi-bin/main.py method="post" id="daForm">
 
   <fieldset id="General">
 
@@ -88,6 +100,7 @@ start = """
 <legend>Calendar:</legend> <input type="date" name="date">
 </fieldset>
 </fieldset>
+
 <fieldset>
 <legend><h2>Action Plan:</h2></legend>
 <fieldset>
@@ -163,21 +176,36 @@ start = """
 </html>
 """
 
+
 class FormHandler(webapp2.RequestHandler):
     #This function creates the start page
     def get(self):
-        logging.info("GET")
-        self.response.write(start)
+
+    	logging.info("GET")
+		#logging.info(self.request.path)
+    	path = 'templates' + self.request.path
+	
+	temp = os.path.join(os.path.dirname(__file__), path)
+
+	if not os.path.isfile(temp):
+		temp = os.path.join(os.path.dirname(__file__), 'templates/general.html')
+		path = 'templates/general.html'
+		
+	#self.response.write(path + '<br />')
+	template = JINJA_ENVIRONMENT.get_template(path)
+
+	self.response.write(template.render())
+
 
     #This generates every succeeding page and prints
     #the previous page's input as their guess
-    def post(self):
-        logging.info("POST")
-        logging.info("this is just for testing")
-        debttoday2 = self.request.get("debttoday")
-        nextmonth2 = self.request.get("nextmonth")
-        follmonth2 = self.request.get("follmonth")
-
+    #def post(self):
+        #logging.info("POST")
+        #logging.info("this is just for testing")
+        #debttoday2 = self.request.get("debttoday")
+        #nextmonth2 = self.request.get("nextmonth")
+        #follmonth2 = self.request.get("follmonth")
+"""
   	#tries to typecast data into an integer
   	try:
   	    #guess = int(data)
@@ -207,9 +235,9 @@ class FormHandler(webapp2.RequestHandler):
   	    self.response.write("<html><p>Guess: %s</p></html>" %debttoday3)
   	    #notice I wrote a new line here to stay in scope
   	    self.response.write("<html><p>%s</p></html>" %msg)
-	
+"""
   	#this is what makes the process eternal!"""
-  	self.response.write(start)
+  	#self.response.write(start)
 
 app = webapp2.WSGIApplication([
 	('/.*', FormHandler)

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset = "UTF-8">
+	<title> ICC Payment Plan Form </title>
+
+  	<link type="text/css" rel="stylesheet" href="/static/style.css">	
+
+	<img src= "/static/paymentplanheader.jpg" align="middle">
+	<p> <h3> Welcome to the new online ICC payment plan form.  This will be automatically sent to members of the Finance Committee for review.  </h3> </p>
+
+</head>
+
+<body>
+	<header>
+		<h1>Kelli Jo Pape</h1>
+
+		<nav>
+			<a href = "general.html">{%block a%}GENERAL INFO{%endblock%}</a>
+			<a href = "balance.html">{%block b%}account balance{%endblock%}</a>
+			<a href = "action.html">{%block c%}action plan{%endblock%}</a>
+			<a href = "agree.html">{%block d%}terms of agreement{%endblock%}</a>
+			<a href = "pics.html">{%block e%}reviews{%endblock%}</a>
+		</nav>
+
+		<h2>
+		  {% block ALLCAPS %} Home {% endblock %}
+		</h2>
+	</header>
+	{% block content %}
+	I should never see this content.  It should be replaced.
+	{% endblock %}
+	<footer>
+		<p>Copyright &copy; Kelli Jo Pape.</p>
+	</footer>
+	
+</body>
+</html>

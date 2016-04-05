@@ -1,0 +1,4 @@
+{%extends "templates/base.html" %}
+
+{%block a%}general info{%endblock%}
+{%block e%}REVIEWS{%endblock%}

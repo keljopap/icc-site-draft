@@ -1,0 +1,57 @@
+{%block a%}general info{%endblock%}
+{%block c%}ACTION PLAN{%endblock%}
+
+{% block content %}
+
+<fieldset>
+<legend><h2>Action Plan:</h2></legend>
+<fieldset>
+<legend>Schedule of Payments</legend>
+<p>I agree to pay the following amounts by the dates listed below.</p>
+<p>This amount must include ALL charges from the months covered by this plan.  50% of the total must be paid in 4 weeks, and 100% must be paid in 8 weeks.  All payment plans must be paid in full by the end of the contract period.</p>
+
+<table id="myTable">
+  <tr>
+    <td>Amount Due</td>
+    <td>Date Due</td>
+  </tr>
+  <tr>
+    <td><input type="text" placeholder="Amount Due" name="due1"></td>
+    <td><input type="date" placeholder="Date Due" name="due2"></td>
+  </tr>
+</table>
+<br>
+
+<button onclick="addNewPaymentSource()">Add Another</button>
+
+
+</fieldset>
+<fieldset id="Payment">
+<legend>Sources of Payment</legend>
+<p>In order to be approved for a payment plan, the member must demonstrate their source(s) of monies to cover the necessary debt in accordance with the payment schedule above.
+<p>Please fill in the following:</p>
+
+<table id="myTable">
+  <tr>
+    <th>Source of Income</th>
+    <th>Date Available</th>
+    <th>Amount Available</th>
+    <th>Attach Documentation*</th>
+  </tr>
+  <tr>
+    <td><input type="text" placeholder="Source of Income" name="source"></td>
+    <td><input type="date" placeholder="Date Available" name="davail"></td>
+    <td><input type="text" placeholder="Amt. Available" name="aavail"></td>
+    <td><input type="text" placeholder="Documentation" name="doc"></td>
+  </tr>
+</table>
+<p> *Acceptable types of documentation may include:  documents from the Financial Aid Office, paystubs, etc. </p>
+<br>
+
+<button onclick="addNewPaymentSource()">Add Another</button>
+
+
+</fieldset>
+</fieldset>
+
+{% endblock %}

@@ -1,9 +1,10 @@
 {%extends "templates/base.html" %}
 
 {%block a%}general info{%endblock%}
-{%block c%}TERMS OF AGREEMENT{%endblock%}
+{%block d%}TERMS OF AGREEMENT{%endblock%}
 
 {% block content %}
+<form method="post" id="daForm">
 
 <fieldset id="Agree">
 <legend><h2>Terms of Agreement</h2></legend>
@@ -22,4 +23,5 @@
 </fieldset>
 </fieldset>
 
+</form>
 {% endblock %}

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset = "UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title> ICC Payment Plan Form </title>
 
   	<link type="text/css" rel="stylesheet" href="/static/style.css">	
@@ -16,23 +17,29 @@
 		<h1>Kelli Jo Pape</h1>
 
 		<nav>
-			<a href = "general.html">{%block a%}GENERAL INFO{%endblock%}</a>
-			<a href = "balance.html">{%block b%}account balance{%endblock%}</a>
-			<a href = "action.html">{%block c%}action plan{%endblock%}</a>
-			<a href = "agree.html">{%block d%}terms of agreement{%endblock%}</a>
-			<a href = "pics.html">{%block e%}reviews{%endblock%}</a>
+			<li><a href = "general.html">{%block a%}GENERAL INFO{%endblock%}</a></li>
+			<li><a href = "balance.html">{%block b%}account balance{%endblock%}</a></li>
+			<li><a href = "action.html">{%block c%}action plan{%endblock%}</a></li>
+			<li><a href = "agree.html">{%block d%}terms of agreement{%endblock%}</a></li>
+			<li><a href = "pics.html">{%block e%}reviews{%endblock%}</a></li>
 		</nav>
 
 		<h2>
 		  {% block ALLCAPS %} Home {% endblock %}
 		</h2>
 	</header>
+
+
+
 	{% block content %}
 	I should never see this content.  It should be replaced.
 	{% endblock %}
+	
+
 	<footer>
 		<p>Copyright &copy; Kelli Jo Pape.</p>
 	</footer>
 	
 </body>
+
 </html>
